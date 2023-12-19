@@ -9,7 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// src/Scraper.ts
+/**
+ * Ifenna Ekwenem
+ * Webscraper Logic
+ */
 const axios_1 = require("axios");
 const cheerio = require("cheerio");
 const createCsvWriter = require("csv-writer");
@@ -19,12 +22,13 @@ function scrapeWebsite(url) {
             const response = yield axios_1.default.get(url);
             const $ = cheerio.load(response.data);
             // Scraping logic
-            const paragraphs = $('p'); // Select all paragraphs, adjust the selector as needed
+            const paragraphs = $('p');
+            // Select all paragraphs, adjust the selector as needed
             let pageContent = '';
             paragraphs.each((index, element) => {
                 pageContent += $(element).text() + '\n';
             });
-            return pageContent.trim(); // Return the contents as a string, as well as removing leading/trailing whitespace
+            return pageContent.trim(); // Return the contents as a string, as well as removing whitespace
         }
         catch (error) {
             console.error('Error:', error.message); // Note: 'any' used for simplicity
@@ -39,7 +43,7 @@ function saveToCsv(data, fileName) {
     });
     csvWriter.writeRecords([{ content: data }]);
 }
-const targetUrl = 'http://ufcstats.com/fighter-details/45f0cc9d18f35137';
+const targetUrl = 'http://ufcstats.com/fight-details/f9ec8bedc15ece93';
 scrapeWebsite(targetUrl)
     .then((content) => {
     console.log('Page Content:\n', content);

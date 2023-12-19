@@ -37,7 +37,7 @@ function saveToCsv(data: string, fileName: string): void {
   csvWriter.writeRecords([{ content: data }]);
 }
 
-const targetUrl = 'http://ufcstats.com/fighter-details/45f0cc9d18f35137';
+const targetUrl = 'http://ufcstats.com/fight-details/f9ec8bedc15ece93';
 scrapeWebsite(targetUrl)
   .then((content) => {
     console.log('Page Content:\n', content);
