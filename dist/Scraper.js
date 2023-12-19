@@ -12,18 +12,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // src/Scraper.ts
 const axios_1 = require("axios");
 const cheerio = require("cheerio");
+const createCsvWriter = require("csv-writer");
 function scrapeWebsite(url) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const response = yield axios_1.default.get(url);
             const $ = cheerio.load(response.data);
-            // Your scraping logic goes here
+            // Scraping logic
             const paragraphs = $('p'); // Select all paragraphs, adjust the selector as needed
             let pageContent = '';
             paragraphs.each((index, element) => {
                 pageContent += $(element).text() + '\n';
             });
-            return pageContent.trim(); // Return the contents as a string, removing leading/trailing whitespace
+            return pageContent.trim(); // Return the contents as a string, as well as removing leading/trailing whitespace
         }
         catch (error) {
             console.error('Error:', error.message); // Note: 'any' used for simplicity
@@ -31,7 +32,13 @@ function scrapeWebsite(url) {
         }
     });
 }
-// Replace 'https://example.com' with the URL you want to scrape
+function saveToCsv(data, fileName) {
+    const csvWriter = createCsvWriter.createObjectCsvWriter({
+        path: fileName,
+        header: [{ id: 'content', title: 'Content' }],
+    });
+    csvWriter.writeRecords([{ content: data }]);
+}
 const targetUrl = 'http://ufcstats.com/fighter-details/45f0cc9d18f35137';
 scrapeWebsite(targetUrl)
     .then((content) => {
