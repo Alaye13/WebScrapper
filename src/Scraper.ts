@@ -1,4 +1,7 @@
-// src/Scraper.ts
+/**
+ * Ifenna Ekwenem
+ * Webscraper Logic
+ */
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import * as createCsvWriter from 'csv-writer';
@@ -10,14 +13,15 @@ async function scrapeWebsite(url: string): Promise<string> {
     const $ = cheerio.load(response.data);
 
     // Scraping logic
-    const paragraphs = $('p'); // Select all paragraphs, adjust the selector as needed
-
+    const paragraphs = $('p'); 
+    // Select all paragraphs, adjust the selector as needed
+   
     let pageContent = '';
     paragraphs.each((index, element) => {
       pageContent += $(element).text() + '\n';
     });
 
-    return pageContent.trim(); // Return the contents as a string, as well as removing leading/trailing whitespace
+    return pageContent.trim(); // Return the contents as a string, as well as removing whitespace
   } catch (error) {
     console.error('Error:', (error as any).message); // Note: 'any' used for simplicity
     return ''; // Return an empty string in case of an error
