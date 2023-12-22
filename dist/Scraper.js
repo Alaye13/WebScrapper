@@ -11,43 +11,79 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Ifenna Ekwenem
- * Webscraper Logic
+ * Web Scraper Logic
  */
 const axios_1 = require("axios");
 const cheerio = require("cheerio");
 const createCsvWriter = require("csv-writer");
-function scrapeWebsite(url) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const response = yield axios_1.default.get(url);
-            const $ = cheerio.load(response.data);
-            // Scraping logic
-            const paragraphs = $('p');
-            // Select all paragraphs, adjust the selector as needed
-            let pageContent = '';
-            paragraphs.each((index, element) => {
-                pageContent += $(element).text() + '\n';
-            });
-            return pageContent.trim(); // Return the contents as a string, as well as removing whitespace
-        }
-        catch (error) {
-            console.error('Error:', error.message); // Note: 'any' used for simplicity
-            return ''; // Return an empty string in case of an error
-        }
-    });
+class WebScraper {
+    constructor(urls) {
+        this.urls = urls;
+    }
+    scrapeWebsite(url) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield axios_1.default.get(url);
+                const $ = cheerio.load(response.data);
+                // Scraping Logic
+                const paragraphs = $('p'); // Select all paragraphs, adjust the selector as needed
+                let pageContent = '';
+                paragraphs.each((index, element) => {
+                    pageContent += $(element).text() + '\n';
+                });
+                return pageContent.trim(); // Return the contents as a string, removing leading/trailing whitespace
+            }
+            catch (error) {
+                console.error(`Error for ${url}:`, error.message); // Note: 'any' used for simplicity
+                return ''; // Return an empty string in case of an error
+            }
+        });
+    }
+    scrapeWebsites() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const promises = this.urls.map((url) => this.scrapeWebsite(url));
+                const contents = yield Promise.all(promises);
+                return contents;
+            }
+            catch (error) {
+                console.error('Error:', error.message);
+                return [];
+            }
+        });
+    }
+    // Save contents from the terminal (Parsed Information) into a CSV data file
+    saveToCsv(data, fileName) {
+        const csvWriter = createCsvWriter.createObjectCsvWriter({
+            path: fileName,
+            header: [{ id: 'content', title: 'Content' }],
+        });
+        const records = data.map((content, index) => ({ content, url: this.urls[index] }));
+        csvWriter.writeRecords(records);
+    }
+    // Run Logic
+    run() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const contents = yield this.scrapeWebsites();
+                contents.forEach((content, index) => {
+                    console.log(`Page Content for ${this.urls[index]}:\n`, content);
+                });
+                // Replace 'output.csv' with your desired CSV file name and path
+                this.saveToCsv(contents, 'output.csv');
+                console.log('Data saved to CSV file.');
+            }
+            catch (error) {
+                console.error('Error:', error.message);
+            }
+        });
+    }
 }
-function saveToCsv(data, fileName) {
-    const csvWriter = createCsvWriter.createObjectCsvWriter({
-        path: fileName,
-        header: [{ id: 'content', title: 'Content' }],
-    });
-    csvWriter.writeRecords([{ content: data }]);
-}
-const targetUrl = 'http://ufcstats.com/fight-details/f9ec8bedc15ece93';
-scrapeWebsite(targetUrl)
-    .then((content) => {
-    console.log('Page Content:\n', content);
-})
-    .catch((error) => {
-    console.error('Error:', error.message);
-});
+// Usage with multiple URLs
+const targetUrls = [
+    'http://ufcstats.com/fight-details/f9ec8bedc15ece93',
+    'http://ufcstats.com/fight-details/09afa6ce4747a1a2',
+    'http://ufcstats.com/fight-details/6101249c2cdd1493',
+];
+const scraper = new WebScraper(targetUrls);
+scraper.run();
