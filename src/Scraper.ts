@@ -65,7 +65,7 @@ class WebScraper {
 
       // Replace 'output.csv' with your desired CSV file name and path
       this.saveToCsv(contents, 'output.csv');
-      console.log('Data saved to CSV file.');
+      console.log('Data saved to Output CSV file.');
     } catch (error: any) {
       console.error('Error:', error.message);
     }
