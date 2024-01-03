@@ -45,6 +45,7 @@ class WebScraper {
   }
 
   // Save contents from the terminal (Parsed Information) into a CSV data file
+  // Will Add Addditional Implementation Features such that Files are properly structured in CSV File
   private saveToCsv(data: string[], fileName: string): void {
     const csvWriter = createCsvWriter.createObjectCsvWriter({
       path: fileName,
