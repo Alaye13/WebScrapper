@@ -64,7 +64,6 @@ class WebScraper {
         console.log(`Page Content for ${this.urls[index]}:\n`, content);
       });
 
-      // Replace 'output.csv' with your desired CSV file name and path
       this.saveToCsv(contents, 'output.csv');
       console.log('Data saved to Output CSV file.');
     } catch (error: any) {
@@ -82,3 +81,4 @@ const targetUrls = [
 
 const scraper = new WebScraper(targetUrls);
 scraper.run();
+

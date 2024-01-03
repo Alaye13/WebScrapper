@@ -53,12 +53,18 @@ class WebScraper {
         });
     }
     // Save contents from the terminal (Parsed Information) into a CSV data file
+    // Will Add Addditional Implementation Features such that Files are properly structured in CSV File
     saveToCsv(data, fileName) {
         const csvWriter = createCsvWriter.createObjectCsvWriter({
             path: fileName,
-            header: [{ id: 'content', title: 'Content' }],
+            header: [{ id: 'content', title: 'Content' }, { id: 'url', title: 'URL' }],
         });
-        const records = data.map((content, index) => ({ content, url: this.urls[index] }));
+        const records = data.map((content, index) => ({
+            content: content,
+            url: this.urls[index],
+            // Add more fields as needed, for example:
+            // additionalField: 'some value',
+        }));
         csvWriter.writeRecords(records);
     }
     // Run Logic
@@ -71,7 +77,7 @@ class WebScraper {
                 });
                 // Replace 'output.csv' with your desired CSV file name and path
                 this.saveToCsv(contents, 'output.csv');
-                console.log('Data saved to CSV file.');
+                console.log('Data saved to Output CSV file.');
             }
             catch (error) {
                 console.error('Error:', error.message);
