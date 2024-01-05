@@ -57,14 +57,13 @@ class WebScraper {
     saveToCsv(data, fileName) {
         const csvWriter = createCsvWriter.createObjectCsvWriter({
             path: fileName,
-            header: [{ id: 'content', title: 'Content' }, { id: 'url', title: 'URL' }],
+            header: [
+                { id: 'content', title: 'Content' },
+                { id: 'fighter', title: 'Fighter' },
+                { id: 'decision', title: 'Decision' }
+            ],
         });
-        const records = data.map((content, index) => ({
-            content: content,
-            url: this.urls[index],
-            // Add more fields as needed, for example:
-            // additionalField: 'some value',
-        }));
+        const records = data.map((content) => ({ content }));
         csvWriter.writeRecords(records);
     }
     // Run Logic
@@ -75,7 +74,6 @@ class WebScraper {
                 contents.forEach((content, index) => {
                     console.log(`Page Content for ${this.urls[index]}:\n`, content);
                 });
-                // Replace 'output.csv' with your desired CSV file name and path
                 this.saveToCsv(contents, 'output.csv');
                 console.log('Data saved to Output CSV file.');
             }

@@ -49,12 +49,18 @@ class WebScraper {
   private saveToCsv(data: string[], fileName: string): void {
     const csvWriter = createCsvWriter.createObjectCsvWriter({
       path: fileName,
-      header: [{ id: 'content', title: 'Content' }],
+      header: [
+        { id: 'attribute1', title: 'Attribute1' },
+        { id: 'attribute2', title: 'Attribute2' },
+        { id: 'attribute3', title: 'Attribute3' },
+        { id: 'classvalue', title: 'Class_Value' }
+      ],
     });
-
-    const records = data.map((content, index) => ({ content, url: this.urls[index] }));
+  
+    const records = data.map((content) => ({ content }));
     csvWriter.writeRecords(records);
   }
+  
 
   // Run Logic
   public async run(): Promise<void> {
