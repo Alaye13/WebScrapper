@@ -131,7 +131,7 @@ export async function getData() {
   const months = 12;
   for (let i = 0; i < months; i++) {
     const document = await fetchFromWebOrCache(
-      `https://www.gardenate.com/?month=${i + 1}`,
+      `http://ufcstats.com/fight-details/a74a8c1e0a49070d=${i + 1}`,
       true
     );
     const data = await extractData(document); // Add await here
