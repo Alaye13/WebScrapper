@@ -7,7 +7,6 @@ import * as cheerio from 'cheerio';
 import * as createCsvWriter from 'csv-writer';
 import * as fs from 'fs';
 
-
 class WebScraper {
   private urls: string[];
 
@@ -45,9 +44,6 @@ class WebScraper {
     }
   }
   
-  
-  
-
   private async scrapeWebsites(): Promise<string[]> {
     try {
       const promises = this.urls.map((url) => this.scrapeWebsite(url));
@@ -61,9 +57,6 @@ class WebScraper {
 
 // Save contents from the terminal (Parsed Information) into a CSV data file
 // Will Add Additional Implementation Features such that Files are properly structured in CSV File
-
-// ...
-
 private saveToCsv(data: string[], fileName: string): void {
   const csvContent = data.join('\n\n'); // Join paragraphs with two line breaks
 
@@ -74,9 +67,6 @@ private saveToCsv(data: string[], fileName: string): void {
     console.error('Error writing to CSV:', error);
   }
 }
-
-
-
   // Run Logic
   public async run(): Promise<void> {
     try {
