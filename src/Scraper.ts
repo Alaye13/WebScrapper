@@ -16,68 +16,48 @@ class WebScraper {
     this.urls = urls;
   }
 
-//     Scraping Logic for "significant strikes"
-
-// ...
-
-// private async scrapeWebsite(url: string): Promise<{ details: string }> {
-//     try {
-//       const response = await axios.get(url);
-//       const $ = cheerio.load(response.data);
-
-//       // Scraping Logic for "Decision Details which includes the judges scorecard"
-//       const detailsParagraphs = $('p').filter((index, element) =>
-//         $(element).text().toLowerCase().includes('UFC')
-//       );
-
-//       let detailsContent = '';
-//       detailsParagraphs.each((index, element) => {
-//         const paragraphText = $(element).text().trim();
-//         const formattedParagraph = paragraphText
-//           .replace(/\s+/g, ' ')
-//           .replace(/\n+/g, '\n')
-//           .replace(/^\s+|\s+$/g, '');
-
-//         if (formattedParagraph.trim() !== '') {
-//           detailsContent += formattedParagraph + '\n\n';
-//         }
-//       });
-
-//       return { details: detailsContent };
-//     } catch (error) {
-//       console.error(`Error scraping ${url}:`, (error as Error).message);
-//       return { details: '' };
-//     }
-//   }
 
 private async scrapeWebsite(url: string): Promise<{ details: string }> {
   try {
-    const response = await axios.get(url);
-    const $ = cheerio.load(response.data);
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.goto(url, { waitUntil: 'domcontentloaded' });
 
-    // Log the full HTML content
-    const htmlContent = response.data;
-    console.log('Full HTML Content:', htmlContent);
+    // Wait for the table content to load using a mutation observer (you might need to adjust the selector)
+    await page.waitForSelector('table');
 
-    // Scraping Logic for all content on the page (text only)
-    const allContentText = $('body').text();
+    const tableContent = await page.evaluate(() => {
+      const rows = Array.from(document.querySelectorAll('table tr'));
+      const headers = rows[0].querySelectorAll('th');
+      const headerText = Array.from(headers).map((header) => header.textContent.trim());
+      const fightDetails = [];
 
-    // Log the extracted content (text only)
-    console.log('All Content (Text Only):', allContentText);
+      for (let i = 1; i < rows.length; i++) {
+        const columns = rows[i].querySelectorAll('td');
+        const rowData = Array.from(columns).map((column) => column.textContent.trim());
+        const fight = {};
+        
+        for (let j = 0; j < headerText.length; j++) {
+          fight[headerText[j]] = rowData[j];
+        }
 
-    // Check if any content is found
-    if (allContentText.trim() !== '') {
-      return { details: allContentText };
-    } else {
-      console.log(`No content found on ${url}`);
-      return { details: '' };
-    }
+        fightDetails.push(fight);
+      }
+
+      return JSON.stringify(fightDetails, null, 2);
+    });
+
+    await browser.close();
+
+    return { details: tableContent || '' };
   } catch (error) {
     console.error(`Error scraping ${url}:`, (error as Error).message);
     return { details: '' };
   }
 }
 
+
+  
 
   private async scrapeWebsites(): Promise<{ details: string }[]> {
     try {
@@ -136,7 +116,7 @@ private async scrapeWebsite(url: string): Promise<{ details: string }> {
 
 // Usage with multiple URLs
 const targetUrls = [
-  'http://ufcstats.com/fighter-details/45f0cc9d18f35137',
+  'http://mmadecisions.com/event/1436/UFC-297-Strickland-vs-du-Plessis',
 ];
 
 const scraper = new WebScraper(targetUrls);

@@ -1,0 +1,57 @@
+//     Scraping Logic for "significant strikes"
+
+// ...
+
+// private async scrapeWebsite(url: string): Promise<{ details: string }> {
+//     try {
+//       const response = await axios.get(url);
+//       const $ = cheerio.load(response.data);
+
+//       // Scraping Logic for "Decision Details which includes the judges scorecard"
+//       const detailsParagraphs = $('p').filter((index, element) =>
+//         $(element).text().toLowerCase().includes('UFC')
+//       );
+
+//       let detailsContent = '';
+//       detailsParagraphs.each((index, element) => {
+//         const paragraphText = $(element).text().trim();
+//         const formattedParagraph = paragraphText
+//           .replace(/\s+/g, ' ')
+//           .replace(/\n+/g, '\n')
+//           .replace(/^\s+|\s+$/g, '');
+
+//         if (formattedParagraph.trim() !== '') {
+//           detailsContent += formattedParagraph + '\n\n';
+//         }
+//       });
+
+//       return { details: detailsContent };
+//     } catch (error) {
+//       console.error(`Error scraping ${url}:`, (error as Error).message);
+//       return { details: '' };
+//     }
+//   }
+
+
+
+
+
+
+// private async scrapeWebsites(): Promise<{ details: string }[]> {
+  //   try {
+  //     const promises = this.urls.map(async (url) => {
+  //       try {
+  //         return await this.scrapeWebsite(url);
+  //       } catch (error) {
+  //         console.error(`Error scraping ${url}:`, (error as Error).message);
+  //         return { details: '' };
+  //       }
+  //     });
+
+  //     const contents = await Promise.all(promises);
+  //     return contents;
+  //   } catch (error) {
+  //     console.error('Error:', (error as Error).message);
+  //     return [];
+  //   }
+  // }

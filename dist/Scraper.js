@@ -20,7 +20,7 @@ class WebScraper {
     constructor(urls) {
         this.urls = urls;
     }
-    // Scraping Logic for "significant strikes"
+    //     Scraping Logic for "significant strikes"
     // ...
     // private async scrapeWebsite(url: string): Promise<{ details: string }> {
     //     try {
@@ -55,13 +55,13 @@ class WebScraper {
                 // Log the full HTML content
                 const htmlContent = response.data;
                 console.log('Full HTML Content:', htmlContent);
-                // Scraping Logic for all content on the page
-                const allContent = $('body').html();
-                // Log the extracted content
-                console.log('All Content:', allContent);
+                // Scraping Logic for all content on the page (text only)
+                const allContentText = $('body').text();
+                // Log the extracted content (text only)
+                console.log('All Content (Text Only):', allContentText);
                 // Check if any content is found
-                if (allContent) {
-                    return { details: allContent };
+                if (allContentText.trim() !== '') {
+                    return { details: allContentText };
                 }
                 else {
                     console.log(`No content found on ${url}`);
