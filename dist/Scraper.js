@@ -15,27 +15,21 @@ function scrapeWebsite(url) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const response = yield axios_1.default.get(url);
+            console.log('Response data:', response.data); // Log response data to verify HTML content
             const $ = cheerio.load(response.data);
-            // Your scraping logic goes here
-            const paragraphs = $('p'); // Select all paragraphs, adjust the selector as needed
-            let pageContent = '';
-            paragraphs.each((index, element) => {
-                pageContent += $(element).text() + '\n';
-            });
-            return pageContent.trim(); // Return the contents as a string, removing leading/trailing whitespace
+            const $selected = $('p.b-fight-details__table-body');
+            console.log($selected);
         }
         catch (error) {
             console.error('Error:', error.message); // Note: 'any' used for simplicity
-            return ''; // Return an empty string in case of an error
         }
     });
 }
 // Replace 'https://example.com' with the URL you want to scrape
-//
 const targetUrl = 'http://ufcstats.com/fight-details/a74a8c1e0a49070d';
 scrapeWebsite(targetUrl)
-    .then((content) => {
-    console.log('Page Content:\n', content);
+    .then(() => {
+    console.log('Scraping complete.');
 })
     .catch((error) => {
     console.error('Error:', error.message);
