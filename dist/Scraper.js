@@ -62,16 +62,7 @@ class WebScraper {
     // Save contents from the terminal (Parsed Information) into a CSV data file
     // Will Add Additional Implementation Features such that Files are properly structured in CSV File
     // ...
-    saveToCsv(data, fileName) {
-        const csvContent = data.join('\n\n'); // Join paragraphs with two line breaks
-        try {
-            fs.writeFileSync(fileName, csvContent);
-            console.log('Data saved to Output CSV file.');
-        }
-        catch (error) {
-            console.error('Error writing to CSV:', error);
-        }
-    }
+  
     // Run Logic
     run() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -97,3 +88,11 @@ const targetUrls = [
 ];
 const scraper = new WebScraper(targetUrls);
 scraper.run();
+const targetUrl = 'http://mmadecisions.com/event/1436/UFC-297-Strickland-vs-du-Plessis';
+scrapeWebsite(targetUrl)
+    .then((content) => {
+    console.log('Page Content:\n', content);
+})
+    .catch((error) => {
+    console.error('Error:', error.message);
+});
