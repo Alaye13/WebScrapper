@@ -8,7 +8,7 @@ async function scrapeWebsite(url: string): Promise<string> {
 
     // Your scraping logic goes here
     const paragraphs = $('p'); // Select all paragraphs, adjust the selector as needed
-
+    
     let pageContent = '';
     paragraphs.each((index, element) => {
       pageContent += $(element).text() + '\n';
@@ -22,6 +22,8 @@ async function scrapeWebsite(url: string): Promise<string> {
 }
 
 // Replace 'https://example.com' with the URL you want to scrape
+//
+
 const targetUrl = 'http://ufcstats.com/fight-details/a74a8c1e0a49070d';
 scrapeWebsite(targetUrl)
   .then((content) => {
