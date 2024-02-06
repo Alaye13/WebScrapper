@@ -22,7 +22,7 @@ async function scrapeWebsite(url: string): Promise<string> {
 }
 
 // Replace 'https://example.com' with the URL you want to scrape
-const targetUrl = 'http://ufcstats.com/fighter-details/45f0cc9d18f35137';
+const targetUrl = 'http://ufcstats.com/fight-details/a74a8c1e0a49070d';
 scrapeWebsite(targetUrl)
   .then((content) => {
     console.log('Page Content:\n', content);
