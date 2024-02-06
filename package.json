@@ -11,13 +11,9 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^20.10.4",
-    "axios": "^1.6.2",
+    "axios": "^1.6.7",
     "cheerio": "^1.0.0-rc.12",
     "typescript": "^5.3.3"
   },
-  "devDependencies": {},
   "description": ""
-
-
-
 }
